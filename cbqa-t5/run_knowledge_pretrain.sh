@@ -1,0 +1,40 @@
+CUDA_VISIBLE_DEVICES=5 python3 -m torch.distributed.launch \
+    --nproc_per_node 1 \
+    knowledge_pretrain.py \
+    --model_name_or_path ../../data/t5-base \
+    --train_file ../../data/cbqa_hq_std/wiki_knowledge_train.json \
+    --validation_file ../../data/cbqa_hq_std/wiki_knowledge_train.json \
+    --kb_layer 11 \
+    --ex_size 3072 \
+    --adaptive_nkb \
+    --optim_group ex \
+    --sec_lr zero \
+    --do_train \
+    --do_eval \
+    --max_train_samples 1000 \
+    --max_eval_samples 100 \
+    --predict_with_generate \
+    --metric_for_best_model f1 \
+    --src_column src \
+    --tgt_column tgt \
+    --per_device_train_batch_size 16 \
+    --per_device_eval_batch_size 16 \
+    --gradient_accumulation_steps 8 \
+    --optim adafactor \
+    --learning_rate 1e-3 \
+    --lr_scheduler_type constant_with_warmup \
+    --max_steps 60000 \
+    --warmup_steps 2000 \
+    --max_seq_length 512 \
+    --max_answer_length 256 \
+    --pad_to_max_length False \
+    --output_dir output_dir \
+    --overwrite_output_dir \
+    --save_strategy no \
+    --evaluation_strategy steps \
+    --eval_steps 5000 \
+    --logging_strategy steps \
+    --logging_steps 1 \
+    --log_on_each_node False \
+    --ddp_find_unused_parameters False \
+    --seed 1234

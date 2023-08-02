@@ -1,0 +1,29 @@
+CUDA_VISIBLE_DEVICES=7 python3 translation.py \
+    --model_name_or_path ../../data/t5-base \
+    --do_train \
+    --do_eval \
+    --source_lang en \
+    --target_lang ro \
+    --source_prefix "translate English to Romanian: " \
+    --label_smoothing 0.1 \
+    --train_file ../../data/wmt-en-ro/train.json \
+    --validation_file ../../data/wmt-en-ro/dev.json \
+    --output_dir output_dir \
+    --overwrite_output_dir \
+    --max_source_length 128 \
+    --max_target_length 128 \
+    --sortish_sampler \
+    --val_max_target_length 128 \
+    --per_device_train_batch_size=16 \
+    --per_device_eval_batch_size=16 \
+    --max_train_samples 1000 \
+    --max_eval_samples 100 \
+    --warmup_steps 500 \
+    --save_strategy steps \
+    --save_steps 1000 \
+    --evaluation_strategy steps \
+    --eval_steps 10 \
+    --logging_strategy steps \
+    --logging_steps 1 \
+    --predict_with_generate \
+    --seed 1234
